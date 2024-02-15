@@ -34,6 +34,19 @@ def add():
         return redirect('/')
     return render_template('add.html')
 
+@app.route('/edit/<int:id>', methods=['POST', 'GET'])
+def edit(id):
+    if request.method == 'GET':
+        with app.app_context():
+            book_to_update = db.session.execute(db.select(Book).where(Book.id == id)).scalar()
+            return render_template('edit.html', book=book_to_update)
+    else:
+        with app.app_context():
+            book_to_update = db.session.execute(db.select(Book).where(Book.id == id)).scalar()
+            book_to_update.rating = float(request.form['rating'])
+            db.session.commit()
+            return redirect('/')
+
 
 if __name__ == "__main__":
     app.run(debug=True)
