@@ -47,6 +47,14 @@ def edit(id):
             db.session.commit()
             return redirect('/')
 
+@app.route('/delete/<int:id>')
+def delete(id):
+    with app.app_context():
+        book_to_delete = db.session.execute(db.select(Book).where(Book.id == id)).scalar()
+        # or book_to_delete = db.get_or_404(Book, book_id)
+        db.session.delete(book_to_delete)
+        db.session.commit()
+        return redirect('/')
 
 if __name__ == "__main__":
     app.run(debug=True)
