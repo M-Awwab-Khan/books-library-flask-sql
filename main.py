@@ -38,11 +38,13 @@ def add():
 def edit(id):
     if request.method == 'GET':
         with app.app_context():
-            book_to_update = db.session.execute(db.select(Book).where(Book.id == id)).scalar()
+            # book_to_update = db.session.execute(db.select(Book).where(Book.id == id)).scalar()
+            book_to_update = db.get_or_404(Book, id)
             return render_template('edit.html', book=book_to_update)
     else:
         with app.app_context():
-            book_to_update = db.session.execute(db.select(Book).where(Book.id == id)).scalar()
+            # book_to_update = db.session.execute(db.select(Book).where(Book.id == id)).scalar()
+            book_to_update = db.get_or_404(Book, id)
             book_to_update.rating = float(request.form['rating'])
             db.session.commit()
             return redirect('/')
