@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for
-from book_model import db
+from book_model import db, Book
 
 app = Flask(__name__)
 
@@ -24,7 +24,10 @@ def add():
             'author': request.form['aname'],
             'rating': int(request.form['rating'])
         }
-        all_books.append(data)
+        with app.app_context():
+            new_book = Book(title=data['title'], author=data['author'], rating=data['rating'])
+            db.session.add(new_book)
+            db.session.commit()
         return redirect('/')
     return render_template('add.html')
 
