@@ -10,10 +10,13 @@ db.init_app(app)
 with app.app_context():
     db.create_all()
 
-all_books = []
+
 @app.route('/')
 def home():
-    return render_template('index.html', books=all_books)
+    with app.app_context():
+        result = db.session.execute(db.select(Book).order_by(Book.title))
+        all_books = result.scalars()
+        return render_template('index.html', books=all_books)
 
 
 @app.route("/add", methods=['GET', 'POST'])
