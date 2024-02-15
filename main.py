@@ -27,9 +27,9 @@ def home():
 def add():
     if request.method == 'POST':
         data = {
-            'bname': request.form.bname,
-            'aname': request.form.aname,
-            'rating': request.form.rating
+            'title': request.form['bname'],
+            'author': request.form['aname'],
+            'rating': int(request.form['rating'])
         }
         all_books.append(data)
     return render_template('add.html')
