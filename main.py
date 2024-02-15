@@ -32,6 +32,7 @@ def add():
             'rating': int(request.form['rating'])
         }
         all_books.append(data)
+        return redirect('/')
     return render_template('add.html')
 
 
